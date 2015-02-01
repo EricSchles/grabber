@@ -7,6 +7,9 @@ import shutil
 import time
 import pickle
 import random
+from PIL import Image
+from StringIO import StringIO
+
 def grabber():
     all_links = []
     urls = [
@@ -66,7 +69,7 @@ def save_files(all_responses):
         for img in img_responses:
             img_name = img.url.split("/")[-1]
             with open(img_name,"wb") as g:
-                img.raw.decode_content = True
+                
                 shutil.copyfileobj(img.raw,g)
         os.chdir("../")
 
