@@ -57,8 +57,8 @@ def save_files(all_responses):
     for r in all_responses:
         text = r.text.encode("ascii","ignore")
         html = lxml.html.fromstring(text)
-        html_imgs = html.xpath('//ul[@id="viewAdPhotoLayout"]/li/a/@src')
-        print text
+        html_imgs = html.xpath('//ul[@id="viewAdPhotoLayout"]/li/img/@src')
+        
         img_rs = (grequests.get(u) for u in html_imgs)
         img_responses = grequests.map(img_rs)
         filename = r.url.split("/")[-1]
@@ -67,12 +67,11 @@ def save_files(all_responses):
         os.chdir(allcontent)
         with open(filename+".html","w") as f:
             f.write(text)
-        print img_responses
+
+        print "saving images"
         for img in img_responses:
-            print "saving images"
             img_name = img.url.split("/")[-1]
             img_name = img_name.split(".")[0]+".png"
-            
             i = Image.open(StringIO(img.content))
             i.save(img_name)
         os.chdir("../")
