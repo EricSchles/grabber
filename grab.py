@@ -6,6 +6,7 @@ import datetime
 import shutil
 import time
 import pickle
+import random
 def grabber():
     all_links = []
     urls = [
@@ -32,13 +33,13 @@ def grabber():
     for i in xrange(0,len(all_links),10):
         urlz.append(all_links[i-10:i])
     all_responses = []
-    total_time = len(urlz)*15/60.0
+    total_time = len(urlz)*4/60.0
     print "will run for ",total_time,"minutes" 
     for url_list in urlz:
         print "in loop"
         all_rs = (grequests.get(u) for u in url_list)
         all_responses += grequests.map(all_rs)
-        time.sleep(15)
+        time.sleep(4)
     return all_responses
 
 
@@ -70,7 +71,10 @@ def save_files(all_responses):
         os.chdir("../")
 
 if __name__ == '__main__':
-    print "starting.."
-    responses = grabber()
-    print "saving.."
-    save_files(responses)
+    while True:
+        print "starting.."
+        responses = grabber()
+        print "saving.."
+        save_files(responses)
+        rando = random.randint(1440,2700)
+        time.sleep(rando)
