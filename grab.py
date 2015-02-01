@@ -68,9 +68,8 @@ def save_files(all_responses):
             f.write(text)
         for img in img_responses:
             img_name = img.url.split("/")[-1]
-            with open(img_name,"wb") as g:
-                
-                shutil.copyfileobj(img.raw,g)
+            i = Image.open(StringIO(img.content))
+            i.save(img_name)
         os.chdir("../")
 
 if __name__ == '__main__':
