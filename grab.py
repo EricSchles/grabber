@@ -35,7 +35,7 @@ def grabber():
     all_responses = []
     total_time = len(urlz)*4/60.0
     print "will run for ",total_time,"minutes" 
-    for url_list in urlz:
+    for url_list in urlz[:2]:
         print "in loop"
         all_rs = (grequests.get(u) for u in url_list)
         all_responses += grequests.map(all_rs)
@@ -61,7 +61,7 @@ def save_files(all_responses):
         allcontent = filename+"_"+timestamp
         os.mkdir(allcontent)
         os.chdir(allcontent)
-        with open(filename,"w") as f:
+        with open(filename+".html","w") as f:
             f.write(text)
         for img in img_responses:
             img_name = img.url.split("/")[-1]
@@ -76,5 +76,6 @@ if __name__ == '__main__':
         responses = grabber()
         print "saving.."
         save_files(responses)
+        print "done"
         rando = random.randint(1440,2700)
         time.sleep(rando)
