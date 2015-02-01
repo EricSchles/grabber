@@ -20,21 +20,26 @@ def grabber():
 
     rs = (grequests.get(u) for u in urls)
     responses = grequests.map(rs)
-    time.sleep(1500)
+    print "initial get.."
+    time.sleep(12)
     for r in responses:
         text = r.text.encode("ascii","ignore")
         html = lxml.html.fromstring(text)
         links = html.xpath('//div[@class="cat"]/a/@href')
         all_links += links
     urlz = []
+    print "processing complete.."
     for i in xrange(0,len(all_links),10):
-        urlsz.append(all_links[i-10:i])
+        urlz.append(all_links[i-10:i])
     all_responses = []
+    total_time = len(urlz)*15/60.0
+    print "will run for ",total_time,"minutes" 
     for url_list in urlz:
+        print "in loop"
         all_rs = (grequests.get(u) for u in url_list)
         all_responses += grequests.map(all_rs)
         time.sleep(15)
-    return 
+    return all_responses
 
 
 def save_files(all_responses):
@@ -65,5 +70,7 @@ def save_files(all_responses):
         os.chdir("../")
 
 if __name__ == '__main__':
+    print "starting.."
     responses = grabber()
+    print "saving.."
     save_files(responses)
